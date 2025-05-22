@@ -1,6 +1,6 @@
 &nbsp;
 <center>
-![The DADA2 R package](images/DADA2_Logo_Text_1_8_640.png)
+![The DADA2 R package](images/DADA2_Logo_Text_1_36_640.png)
 </center>
 
 --------------------------
@@ -9,18 +9,18 @@
 
 --------------------------
 
-####**<span style="color:red">Version 1.8 of the dada2 R package has been released. See the [release notes.](ReleaseNotes_1_8.html)</span>**
+####**<span style="color:red">Version 1.36 of the dada2 R package has been released. See the [release notes.](ReleaseNotes_1_36.html)</span>**
 
 &nbsp;
 
 ## Installation
 
-Binaries for the current release version of DADA2 (1.8) are available from Bioconductor. Note that you must have R 3.5.0 or newer, and [Biocondcutor version 3.7](https://www.bioconductor.org/install/), to install the current release from Bioconductor.
+Binaries for the current release version of DADA2 (1.36.0) are available from Bioconductor. Note that you must have R 4.5 or newer, and [Bioconductor version 3.21](https://www.bioconductor.org/install/), to install the current release from Bioconductor.
 
-```S
-## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("dada2")
+```R
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("dada2")
 ```
 
 If you wish to install the latest and greatest development version, or to install to earlier versions of R, see our [from-source installation instructions](dada-installation.html).

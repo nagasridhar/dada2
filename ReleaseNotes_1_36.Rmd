@@ -1,0 +1,33 @@
+DADA2 Workflow Update to Version 1.36.0
+-----------------------------------------
+
+This update focuses on incorporating version 1.36.0 of the DADA2 R package into the workflow and documentation.
+
+#### KEY CHANGES IN THIS WORKFLOW VERSION
+
+*   **DADA2 Version Update**: The core DADA2 package version used in this tutorial and recommended for installation has been updated from 1.8 to 1.36.0.
+*   **Updated Installation Instructions**:
+    *   Installation now uses `BiocManager::install("dada2")`.
+    *   Requires R version 4.5 or newer.
+    *   Requires Bioconductor version 3.21.
+    *   The `dada-installation.Rmd` guide has been updated accordingly.
+*   **Tutorial Update**:
+    *   The main tutorial (`tutorial.Rmd`, which generates `tutorial.html`) has been updated to use DADA2 v1.36.0 and reflects the new version in its title and text.
+    *   The previous `tutorial_1_8.Rmd` is now archived as an older version.
+*   **Website Update**:
+    *   The main page (`index.Rmd`) has been updated to reflect DADA2 v1.36.0, new installation instructions, and links to these release notes.
+
+#### DADA2 PACKAGE CHANGES (v1.8 to v1.36.0)
+
+DADA2 has undergone significant development between versions 1.8 and 1.36.0, introducing many new features, improvements, and bug fixes. For a comprehensive list of changes in the DADA2 package itself, users are encouraged to consult the official [DADA2 NEWS file](https://github.com/benjjneb/dada2/blob/master/NEWS.md) or the Bioconductor release notes for each intervening version.
+
+Some notable general improvements in DADA2 over this period include (but are not limited to):
+*   Support for longer reads (e.g., PacBio CCS).
+*   Enhancements to primer removal and handling.
+*   New functions for sequence complexity analysis.
+*   Improvements to memory efficiency and speed in various functions.
+*   Refinements to existing functions and algorithms.
+
+Users should refer to the official DADA2 documentation for detailed information on how these changes might affect their analyses beyond this tutorial.
+
+-----------------------------------------

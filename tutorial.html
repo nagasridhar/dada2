@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>DADA2 Pipeline Tutorial (1.8)</title>
+<title>DADA2 Pipeline Tutorial (1.16)</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,7 +22,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -71,9 +72,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -87,13 +86,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -109,7 +113,6 @@ body {
   padding-top: 65px;
   margin-top: -65px;
 }
-
 .section h2 {
   padding-top: 65px;
   margin-top: -65px;
@@ -129,6 +132,43 @@ body {
 .section h6 {
   padding-top: 65px;
   margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -150,19 +190,74 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -204,6 +299,9 @@ $(document).ready(function () {
       <a href="assign.html">Taxonomy</a>
     </li>
     <li>
+      <a href="training.html">Taxonomic References</a>
+    </li>
+    <li>
       <a href="pool.html">Pooling</a>
     </li>
     <li>
@@ -221,10 +319,13 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="http://dx.doi.org/10.1038/nmeth.3869">Manuscript</a>
+      <a href="http://dx.doi.org/10.1038/nmeth.3869">DADA2 Manuscript</a>
     </li>
     <li>
       <a href="http://dx.doi.org/10.1038/ismej.2017.119">Exact Sequence Variants</a>
+    </li>
+    <li>
+      <a href="https://doi.org/10.1101/392332">PacBio Long Reads</a>
     </li>
     <li>
       <a href="SMBS_DADA2.pdf">Symposium Slides</a>
@@ -263,12 +364,12 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">DADA2 Pipeline Tutorial (1.8)</h1>
+<h1 class="title toc-ignore">DADA2 Pipeline Tutorial (1.16)</h1>
 
 </div>
 
 
-<p>Here we walk through version 1.8 of the DADA2 pipeline on a small multi-sample dataset. Our starting point is a set of Illumina-sequenced paired-end fastq files that have been split (or “demultiplexed”) by sample and from which the barcodes/adapters have already been removed. The end product is an <strong>amplicon sequence variant (ASV) table</strong>, a higher-resolution analogue of the traditional OTU table, which records the number of times each <a href="https://www.nature.com/articles/ismej2017119">exact amplicon sequence variant</a> was observed in each sample. We also assign taxonomy to the output sequences, and demonstrate how the data can be imported into the popular <a href="https://joey711.github.io/phyloseq/">phyloseq</a> R package for the analysis of microbiome data.</p>
+<p>Here we walk through version 1.16 of the DADA2 pipeline on a small multi-sample dataset. Our starting point is a set of Illumina-sequenced paired-end fastq files that have been split (or “demultiplexed”) by sample and from which the barcodes/adapters have already been removed. The end product is an <strong>amplicon sequence variant (ASV) table</strong>, a higher-resolution analogue of the traditional OTU table, which records the number of times each <a href="https://www.nature.com/articles/ismej2017119">exact amplicon sequence variant</a> was observed in each sample. We also assign taxonomy to the output sequences, and demonstrate how the data can be imported into the popular <a href="https://joey711.github.io/phyloseq/">phyloseq</a> R package for the analysis of microbiome data.</p>
 <hr />
 <div id="starting-point" class="section level1">
 <h1>Starting point</h1>
@@ -284,9 +385,9 @@ $(document).ready(function () {
 <h1>Getting ready</h1>
 <p>First we load the <code>dada2</code> package. If you don’t already have it, see the <a href="dada-installation.html">dada2 installation instructions</a>.</p>
 <pre class="r"><code>library(dada2); packageVersion(&quot;dada2&quot;)</code></pre>
-<pre><code>## [1] &#39;1.9.0&#39;</code></pre>
-<p><em>Older versions of this workflow associated with previous release versions of the dada2 R package are also available: <a href="tutorial_1_2.html">version 1.2</a>, <a href="tutorial_1_4.html">1.4</a>, <a href="tutorial_1_6.html">1.6</a>.</em></p>
-<p>The data we will work with are the same as those used in the <a href="http://www.mothur.org/wiki/MiSeq_SOP">mothur MiSeq SOP</a>. To follow along, download the <a href="http://www.mothur.org/w/images/d/d6/MiSeqSOPData.zip">example data</a> and unzip. These fastq files were generated by amplicon sequencing gut samples collected longitudinally from mice post-weaning, and one mock community control (Illumina MiSeq, 2x250, V4 region of the 16S rRNA gene). For now just consider them paired-end fastq files to be processed. Define the following path variable so that it points to the extracted directory on <strong>your</strong> machine:</p>
+<pre><code>## [1] &#39;1.16.0&#39;</code></pre>
+<p><em>Older versions of this workflow associated with previous release versions of the dada2 R package are also available: <a href="tutorial_1_6.html">1.6</a>, <a href="tutorial_1_8.html">1.8</a>, <a href="tutorial_1_12.html">1.12</a>, .</em></p>
+<p>The data we will work with are the same as those used in the <a href="https://mothur.org/wiki/miseq_sop/">mothur MiSeq SOP</a>. To follow along, download the <a href="https://mothur.s3.us-east-2.amazonaws.com/wiki/miseqsopdata.zip">example data</a> and unzip. These fastq files were generated by 2x250 Illumina Miseq amplicon sequencing of the V4 region of the 16S rRNA gene from gut samples collected longitudinally from a mouse post-weaning. For now just consider them paired-end fastq files to be processed. Define the following path variable so that it points to the extracted directory on <strong>your</strong> machine:</p>
 <pre class="r"><code>path &lt;- &quot;~/MiSeq_SOP&quot; # CHANGE ME to the directory containing the fastq files after unzipping.
 list.files(path)</code></pre>
 <pre><code>##  [1] &quot;F3D0_S188_L001_R1_001.fastq&quot;   &quot;F3D0_S188_L001_R2_001.fastq&quot;  
@@ -308,10 +409,11 @@ list.files(path)</code></pre>
 ## [33] &quot;F3D7_S195_L001_R1_001.fastq&quot;   &quot;F3D7_S195_L001_R2_001.fastq&quot;  
 ## [35] &quot;F3D8_S196_L001_R1_001.fastq&quot;   &quot;F3D8_S196_L001_R2_001.fastq&quot;  
 ## [37] &quot;F3D9_S197_L001_R1_001.fastq&quot;   &quot;F3D9_S197_L001_R2_001.fastq&quot;  
-## [39] &quot;filtered&quot;                      &quot;HMP_MOCK.v35.fasta&quot;           
-## [41] &quot;Mock_S280_L001_R1_001.fastq&quot;   &quot;Mock_S280_L001_R2_001.fastq&quot;  
-## [43] &quot;mouse.dpw.metadata&quot;            &quot;mouse.time.design&quot;            
-## [45] &quot;stability.batch&quot;               &quot;stability.files&quot;</code></pre>
+## [39] &quot;filtered&quot;                      &quot;FWD&quot;                          
+## [41] &quot;HMP_MOCK.v35.fasta&quot;            &quot;Mock_S280_L001_R1_001.fastq&quot;  
+## [43] &quot;Mock_S280_L001_R2_001.fastq&quot;   &quot;mouse.dpw.metadata&quot;           
+## [45] &quot;mouse.time.design&quot;             &quot;REV&quot;                          
+## [47] &quot;stability.batch&quot;               &quot;stability.files&quot;</code></pre>
 <p>If the package successfully loaded and your listed files match those here, you are ready to go through the DADA2 pipeline.</p>
 <p>Now we read in the names of the fastq files, and perform some string manipulation to get matched lists of the forward and reverse fastq files.</p>
 <pre class="r"><code># Forward and reverse fastq filenames have format: SAMPLENAME_R1_001.fastq and SAMPLENAME_R2_001.fastq
@@ -328,15 +430,11 @@ sample.names &lt;- sapply(strsplit(basename(fnFs), &quot;_&quot;), `[`, 1)</code
 <h1>Inspect read quality profiles</h1>
 <p>We start by visualizing the quality profiles of the forward reads:</p>
 <pre class="r"><code>plotQualityProfile(fnFs[1:2])</code></pre>
-<pre><code>## Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which
-## will replace the existing scale.</code></pre>
 <p><img src="tutorial_files/figure-html/see-quality-F-1.png" width="672" /></p>
-<p>In gray-scale is a heat map of the frequency of each quality score at each base position. The median quality score at each position is shown by the green line, and the quartiles of the quality score distribution by the orange lines. The red line shows the scaled proportion of reads that extend to at least that position (this is more useful for other sequencing technologies, as Illumina reads are typically all the same lenghth, hence the flat red line).</p>
+<p>In gray-scale is a heat map of the frequency of each quality score at each base position. The mean quality score at each position is shown by the green line, and the quartiles of the quality score distribution by the orange lines. The red line shows the scaled proportion of reads that extend to at least that position (this is more useful for other sequencing technologies, as Illumina reads are typically all the same length, hence the flat red line).</p>
 <p>The forward reads are good quality. We generally advise trimming the last few nucleotides to avoid less well-controlled errors that can arise there. These quality profiles do not suggest that any additional trimming is needed. We will truncate the forward reads at position 240 (trimming the last 10 nucleotides).</p>
 <p>Now we visualize the quality profile of the reverse reads:</p>
 <pre class="r"><code>plotQualityProfile(fnRs[1:2])</code></pre>
-<pre><code>## Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which
-## will replace the existing scale.</code></pre>
 <p><img src="tutorial_files/figure-html/see-quality-R-1.png" width="672" /></p>
 <p>The reverse reads are of significantly worse quality, especially at the end, which is common in Illumina sequencing. This isn’t too worrisome, as DADA2 incorporates quality information into its error model which makes the algorithm <a href="https://twitter.com/bejcal/status/771010634074820608">robust to lower quality sequence</a>, but trimming as the average qualities crash will improve the algorithm’s sensitivity to rare sequence variants. Based on these profiles, we will truncate the reverse reads at position 160 where the quality distribution crashes.</p>
 <div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;">
@@ -349,8 +447,10 @@ sample.names &lt;- sapply(strsplit(basename(fnFs), &quot;_&quot;), `[`, 1)</code
 <p>Assign the filenames for the filtered fastq.gz files.</p>
 <pre class="r"><code># Place filtered files in filtered/ subdirectory
 filtFs &lt;- file.path(path, &quot;filtered&quot;, paste0(sample.names, &quot;_F_filt.fastq.gz&quot;))
-filtRs &lt;- file.path(path, &quot;filtered&quot;, paste0(sample.names, &quot;_R_filt.fastq.gz&quot;))</code></pre>
-<p>We’ll use standard filtering parameters: <code>maxN=0</code> (DADA2 requires no Ns), <code>truncQ=2</code>, <code>rm.phix=TRUE</code> and <code>maxEE=2</code>. The <code>maxEE</code> parameter sets the maximum number of “expected errors” allowed in a read, which is <a href="http://www.drive5.com/usearch/manual/expected_errors.html">a better filter than simply averaging quality scores</a>.</p>
+filtRs &lt;- file.path(path, &quot;filtered&quot;, paste0(sample.names, &quot;_R_filt.fastq.gz&quot;))
+names(filtFs) &lt;- sample.names
+names(filtRs) &lt;- sample.names</code></pre>
+<p>We’ll use standard filtering parameters: <code>maxN=0</code> (DADA2 requires no Ns), <code>truncQ=2</code>, <code>rm.phix=TRUE</code> and <code>maxEE=2</code>. The <code>maxEE</code> parameter sets the maximum number of “expected errors” allowed in a read, which is <a href="https://academic.oup.com/bioinformatics/article/31/21/3476/194979">a better filter than simply averaging quality scores</a>.</p>
 <pre class="r"><code>out &lt;- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(240,160),
               maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE,
               compress=TRUE, multithread=TRUE) # On Windows set multithread=FALSE
@@ -366,7 +466,10 @@ head(out)</code></pre>
 <strong><span style="color:red">Considerations for your own data:</span></strong> The standard filtering parameters are starting points, not set in stone. If you want to speed up downstream computation, consider tightening <code>maxEE</code>. If too few reads are passing the filter, consider relaxing <code>maxEE</code>, perhaps especially on the reverse reads (eg. <code>maxEE=c(2,5)</code>), and reducing the <code>truncLen</code> to remove low quality tails. Remember though, when choosing <code>truncLen</code> for paired-end reads you must maintain overlap after truncation in order to merge them later.
 </div>
 <div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;margin-top: 15px;">
-<strong><span style="color:red">Considerations for your own data:</span></strong> For common ITS amplicon strategies, it is undesirable to truncate reads to a fixed length due to the large amount of length variation at that locus. That is OK, just leave out <code>truncLen</code>. Make sure you removed the forward and reverse primers from both the forward and reverse reads though!
+<strong><span style="color:red">Considerations for your own data:</span></strong> For ITS sequencing, it is usually undesirable to truncate reads to a fixed length due to the large length variation at that locus. That is OK, just leave out <code>truncLen</code>. See the <a href="ITS_workflow.html">DADA2 ITS workflow</a> for more information
+</div>
+<div style="border: 1px solid green;padding: 5px;background-color: #f0fff0;margin-top:30px;margin-bottom: 15px;">
+<p><span style="color:green"><strong>Alternatives:</strong></span> <a href="https://www.zymoresearch.com/">Zymo Research</a> has recently developed a tool called Figaro that can help you choose DADA2 truncation length parameters: <a href="https://github.com/Zymo-Research/figaro#figaro" class="uri">https://github.com/Zymo-Research/figaro#figaro</a></p>
 </div>
 <p> </p>
 </div>
@@ -375,52 +478,19 @@ head(out)</code></pre>
 <p>The DADA2 algorithm makes use of a parametric error model (<code>err</code>) and every amplicon dataset has a different set of error rates. The <code>learnErrors</code> method learns this error model from the data, by alternating estimation of the error rates and inference of sample composition until they converge on a jointly consistent solution. As in many machine-learning problems, the algorithm must begin with an initial guess, for which the maximum possible error rates in this data are used (the error rates if only the most abundant sequence is correct and all the rest are errors).</p>
 <p><em>The following runs in about 3 minutes on a 2013 Macbook Pro:</em></p>
 <pre class="r"><code>errF &lt;- learnErrors(filtFs, multithread=TRUE)</code></pre>
-<pre><code>## 33514080 total bases in 139642 reads from 20 samples will be used for learning the error rates.
-## Initializing error rates to maximum possible estimate.
-## selfConsist step 1 ....................
-##    selfConsist step 2
-##    selfConsist step 3
-##    selfConsist step 4
-##    selfConsist step 5
-## Convergence after  5  rounds.</code></pre>
+<pre><code>## 33514080 total bases in 139642 reads from 20 samples will be used for learning the error rates.</code></pre>
 <pre class="r"><code>errR &lt;- learnErrors(filtRs, multithread=TRUE)</code></pre>
-<pre><code>## 22342720 total bases in 139642 reads from 20 samples will be used for learning the error rates.
-## Initializing error rates to maximum possible estimate.
-## selfConsist step 1 ....................
-##    selfConsist step 2
-##    selfConsist step 3
-##    selfConsist step 4
-##    selfConsist step 5
-##    selfConsist step 6
-##    selfConsist step 7
-## Convergence after  7  rounds.</code></pre>
+<pre><code>## 22342720 total bases in 139642 reads from 20 samples will be used for learning the error rates.</code></pre>
 <p>It is always worthwhile, as a sanity check if nothing else, to visualize the estimated error rates:</p>
 <pre class="r"><code>plotErrors(errF, nominalQ=TRUE)</code></pre>
 <p><img src="tutorial_files/figure-html/plot-errors-1.png" width="672" /></p>
 <p>The error rates for each possible transition (A→C, A→G, …) are shown. Points are the observed error rates for each consensus quality score. The black line shows the estimated error rates after convergence of the machine-learning algorithm. The red line shows the error rates expected under the nominal definition of the Q-score. Here the estimated error rates (black line) are a good fit to the observed rates (points), and the error rates drop with increased quality as expected. Everything looks reasonable and we proceed with confidence.</p>
-<div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;">
-<strong><span style="color:red">Considerations for your own data:</span></strong> Parameter learning is computationally intensive, so by default the <code>learnErrors</code> function uses only a subset of the data (the first 100M bases). If you are working with a large dataset and the plotted error model does not look like a good fit, you can try increasing the <code>nbases</code> parameter to see if the fit improves.
-</div>
-<p> </p>
-</div>
-<div id="dereplication" class="section level1">
-<h1>Dereplication</h1>
-<p>Dereplication combines all identical sequencing reads into into “unique sequences” with a corresponding “abundance” equal to the number of reads with that unique sequence. Dereplication substantially reduces computation time by eliminating redundant comparisons.</p>
-<p>Dereplication in the DADA2 pipeline has one crucial addition from other pipelines: <em>DADA2 retains a summary of the quality information associated with each unique sequence</em>. The consensus quality profile of a unique sequence is the average of the positional qualities from the dereplicated reads. These quality profiles inform the error model of the subsequent sample inference step, significantly increasing DADA2’s accuracy.</p>
-<pre class="r"><code>derepFs &lt;- derepFastq(filtFs, verbose=TRUE)
-derepRs &lt;- derepFastq(filtRs, verbose=TRUE)
-# Name the derep-class objects by the sample names
-names(derepFs) &lt;- sample.names
-names(derepRs) &lt;- sample.names</code></pre>
-<div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;">
-<strong><span style="color:red">Considerations for your own data:</span></strong> The tutorial dataset is small enough to easily load into memory. If your dataset exceeds available RAM, it is preferable to process samples one-by-one in a streaming fashion: see the <a href="bigdata.html">DADA2 Workflow on Big Data</a> for an example.
-</div>
 <p> </p>
 </div>
 <div id="sample-inference" class="section level1">
 <h1>Sample Inference</h1>
-<p>We are now ready to apply <a href="https://www.nature.com/articles/nmeth.3869#methods">the core sample inference algorithm</a> to the dereplicated data.</p>
-<pre class="r"><code>dadaFs &lt;- dada(derepFs, err=errF, multithread=TRUE)</code></pre>
+<p>We are now ready to apply <a href="https://www.nature.com/articles/nmeth.3869#methods">the core sample inference algorithm</a> to the filtered and trimmed sequence data.</p>
+<pre class="r"><code>dadaFs &lt;- dada(filtFs, err=errF, multithread=TRUE)</code></pre>
 <pre><code>## Sample 1 - 7113 reads in 1979 unique sequences.
 ## Sample 2 - 5299 reads in 1639 unique sequences.
 ## Sample 3 - 5463 reads in 1477 unique sequences.
@@ -441,7 +511,7 @@ names(derepRs) &lt;- sample.names</code></pre>
 ## Sample 18 - 4871 reads in 1382 unique sequences.
 ## Sample 19 - 6504 reads in 1709 unique sequences.
 ## Sample 20 - 4314 reads in 897 unique sequences.</code></pre>
-<pre class="r"><code>dadaRs &lt;- dada(derepRs, err=errR, multithread=TRUE)</code></pre>
+<pre class="r"><code>dadaRs &lt;- dada(filtRs, err=errR, multithread=TRUE)</code></pre>
 <pre><code>## Sample 1 - 7113 reads in 1660 unique sequences.
 ## Sample 2 - 5299 reads in 1349 unique sequences.
 ## Sample 3 - 5463 reads in 1335 unique sequences.
@@ -468,21 +538,18 @@ names(derepRs) &lt;- sample.names</code></pre>
 ## 128 sequence variants were inferred from 1979 input unique sequences.
 ## Key parameters: OMEGA_A = 1e-40, OMEGA_C = 1e-40, BAND_SIZE = 16</code></pre>
 <p>The DADA2 algorithm inferred 128 true sequence variants from the 1979 unique sequences in the first sample. There is much more to the <code>dada-class</code> return object than this (see <code>help(&quot;dada-class&quot;)</code> for some info), including multiple diagnostics about the quality of each denoised sequence variant, but that is beyond the scope of an introductory tutorial.</p>
-<div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;">
-<strong><span style="color:red">Considerations for your own data:</span></strong> All samples are simultaneously loaded into memory in the tutorial. If you are dealing with datasets that approach or exceed available RAM, it is preferable to process samples one-by-one in a streaming fashion: see the <a href="bigdata.html">DADA2 Workflow on Big Data</a> for an example.
-</div>
 <div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;margin-top: 15px;">
 <strong><span style="color:red">Considerations for your own data:</span></strong> DADA2 also supports 454 and Ion Torrent data, but <a href="faq.html#can-i-use-dada2-with-my-454-or-ion-torrent-data">we recommend some minor parameter changes</a> for those pyrosequencing technologies. The adventurous can explore <code>?setDadaOpt</code> for other adjustable algorithm parameters.
 </div>
 <div style="border: 1px solid blue;padding: 5px;background-color: #f0f0ff;;margin-top: 15px;">
-<span style="color:blue"><strong>Extensions:</strong></span> By default, the <code>dada</code> function processes each sample independently. However, pooling information across samples can increase sensitivity to sequence variants that may be present at very low frequencies in multiple samples. The dada2 package offers two types of pooling. <code>dada(..., pool=TRUE)</code> performs <a href="pool.html#pooling-for-sample-inference">standard pooled processing, in which all samples are pooled together for sample inference</a>. <code>dada(..., pool=&quot;pseudo&quot;)</code> performs pseudo-pooling, in which <a href="pseudo.html#Pseudo-pooling">samples are processed independently after sharing information between samples, approximating pooled sample inference in linear time</a>.
+<span style="color:blue"><strong>Extensions:</strong></span> By default, the <code>dada</code> function processes each sample independently. However, pooling information across samples can increase sensitivity to sequence variants that may be present at very low frequencies in multiple samples. The dada2 package offers two types of pooling. <code>dada(..., pool=TRUE)</code> performs <a href="pool.html">standard pooled processing, in which all samples are pooled together for sample inference</a>. <code>dada(..., pool=&quot;pseudo&quot;)</code> performs pseudo-pooling, in which <a href="pseudo.html#Pseudo-pooling">samples are processed independently after sharing information between samples, approximating pooled sample inference in linear time</a>.
 </div>
 <p> </p>
 </div>
 <div id="merge-paired-reads" class="section level1">
 <h1>Merge paired reads</h1>
-<p>We now merge the forward and reverse reads together to obtain the full denoised sequences. Merging is performed by aligning the denoised forward reads with the reverse-complement of the corresponding denoised reverse reads, and then constructing the merged “contig” sequences. By default, merged sequences are only output if the forward and reverse reads overlap by at least 12 bases, and are identical to each other in the overlap region.</p>
-<pre class="r"><code>mergers &lt;- mergePairs(dadaFs, derepFs, dadaRs, derepRs, verbose=TRUE)
+<p>We now merge the forward and reverse reads together to obtain the full denoised sequences. Merging is performed by aligning the denoised forward reads with the reverse-complement of the corresponding denoised reverse reads, and then constructing the merged “contig” sequences. By default, merged sequences are only output if the forward and reverse reads overlap by at least 12 bases, and are identical to each other in the overlap region (but these conditions can be changed via function arguments).</p>
+<pre class="r"><code>mergers &lt;- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose=TRUE)
 # Inspect the merger data.frame from the first sample
 head(mergers[[1]])</code></pre>
 <pre><code>##                                                                                                                                                                                                                                                       sequence
@@ -511,9 +578,8 @@ head(mergers[[1]])</code></pre>
 <div id="construct-sequence-table" class="section level1">
 <h1>Construct sequence table</h1>
 <p>We can now construct an amplicon sequence variant table (ASV) table, a higher-resolution version of the OTU table produced by traditional methods.</p>
-<pre class="r"><code>seqtab &lt;- makeSequenceTable(mergers)</code></pre>
-<pre><code>## The sequences being tabled vary in length.</code></pre>
-<pre class="r"><code>dim(seqtab)</code></pre>
+<pre class="r"><code>seqtab &lt;- makeSequenceTable(mergers)
+dim(seqtab)</code></pre>
 <pre><code>## [1]  20 293</code></pre>
 <pre class="r"><code># Inspect distribution of sequence lengths
 table(nchar(getSequences(seqtab)))</code></pre>
@@ -522,18 +588,18 @@ table(nchar(getSequences(seqtab)))</code></pre>
 ##   1  88 196   6   2</code></pre>
 <p>The sequence table is a <code>matrix</code> with rows corresponding to (and named by) the samples, and columns corresponding to (and named by) the sequence variants. This table contains 293 ASVs, and the lengths of our merged sequences all fall within the expected range for this V4 amplicon.</p>
 <div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;">
-<strong><span style="color:red">Considerations for your own data:</span></strong> Sequences that are much longer or shorter than expected may be the result of non-specific priming. You can remove non-target-length sequences with base R manipulations of the sequence table (eg. <code>seqtab2 &lt;- seqtab[,nchar(colnames(seqtab)) %in% seq(250,256)]</code>). This is analogous to “cutting a band” in-silico to get amplicons of the targeted length.
+<strong><span style="color:red">Considerations for your own data:</span></strong> Sequences that are much longer or shorter than expected may be the result of non-specific priming. You can remove non-target-length sequences from your sequence table (eg. <code>seqtab2 &lt;- seqtab[,nchar(colnames(seqtab)) %in% 250:256]</code>). This is analogous to “cutting a band” in-silico to get amplicons of the targeted length.
 </div>
 <p> </p>
 </div>
 <div id="remove-chimeras" class="section level1">
 <h1>Remove chimeras</h1>
-<p>The core <code>dada</code> method corrects substitution and indel errors, but chimeras remain. Fortunately, the accuracy of the sequence variants after denoising makes identifying chimeras simpler than it is when dealing with fuzzy OTUs. Chimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant “parent” sequences.</p>
+<p>The core <code>dada</code> method corrects substitution and indel errors, but chimeras remain. Fortunately, the accuracy of sequence variants after denoising makes identifying chimeric ASVs simpler than when dealing with fuzzy OTUs. Chimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant “parent” sequences.</p>
 <pre class="r"><code>seqtab.nochim &lt;- removeBimeraDenovo(seqtab, method=&quot;consensus&quot;, multithread=TRUE, verbose=TRUE)
 dim(seqtab.nochim)</code></pre>
 <pre><code>## [1]  20 232</code></pre>
 <pre class="r"><code>sum(seqtab.nochim)/sum(seqtab)</code></pre>
-<pre><code>## [1] 0.964064</code></pre>
+<pre><code>## [1] 0.964263</code></pre>
 <p>The frequency of chimeric sequences varies substantially from dataset to dataset, and depends on on factors including experimental procedures and sample complexity. Here chimeras make up about 21% of the merged sequence variants, but when we account for the abundances of those variants we see they account for only about 4% of the merged sequence reads.</p>
 <div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;">
 <strong><span style="color:red">Considerations for your own data:</span></strong> Most of your <strong>reads</strong> should remain after chimera removal (it is not uncommon for a majority of <strong>sequence variants</strong> to be removed though). If most of your reads were removed as chimeric, upstream processing may need to be revisited. In almost all cases this is caused by primer sequences with ambiguous nucleotides that were not removed prior to beginning the DADA2 pipeline.
@@ -550,51 +616,66 @@ colnames(track) &lt;- c(&quot;input&quot;, &quot;filtered&quot;, &quot;denoisedF
 rownames(track) &lt;- sample.names
 head(track)</code></pre>
 <pre><code>##        input filtered denoisedF denoisedR merged nonchim
-## F3D0    7793     7113      6976      6979   6540    6528
-## F3D1    5869     5299      5227      5239   5028    5017
-## F3D141  5958     5463      5331      5357   4986    4863
-## F3D142  3183     2914      2799      2830   2595    2521
-## F3D143  3178     2941      2822      2867   2552    2518
-## F3D144  4827     4312      4151      4228   3627    3488</code></pre>
+## F3D0    7793     7113      6996      6978   6551    6539
+## F3D1    5869     5299      5227      5239   5025    5014
+## F3D141  5958     5463      5339      5351   4973    4850
+## F3D142  3183     2914      2799      2833   2595    2521
+## F3D143  3178     2941      2822      2868   2553    2519
+## F3D144  4827     4312      4146      4224   3622    3483</code></pre>
 <p>Looks good! We kept the majority of our raw reads, and there is no over-large drop associated with any single step.</p>
 <div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;">
-<strong><span style="color:red">Considerations for your own data:</span></strong> This is a great place to do a last <strong>sanity check</strong>. Outside of filtering (depending on how stringent you want to be) there should no step in which a majority of reads are lost. If a majority of reads failed to merge, you may need to revisit the <code>truncLen</code> parameter used in the filtering step and make sure that the truncated reads span your amplicon. If a majority of reads were removed as chimeric, you may need to revisit the removal of primers, as the ambiguous nucleotides in unremoved primers interfere with chimera identification.
+<strong><span style="color:red">Considerations for your own data:</span></strong> This is a great place to do a last <strong>sanity check</strong>. Outside of filtering, there should no step in which a majority of reads are lost. If a majority of reads failed to merge, you may need to revisit the <code>truncLen</code> parameter used in the filtering step and make sure that the truncated reads span your amplicon. If a majority of reads were removed as chimeric, you may need to revisit the removal of primers, as the ambiguous nucleotides in unremoved primers interfere with chimera identification.
 </div>
 <p> </p>
 </div>
 <div id="assign-taxonomy" class="section level1">
 <h1>Assign taxonomy</h1>
-<p>It is common at this point, especially in 16S/18S/ITS amplicon sequencing, to assign taxonomy to the sequence variants. The DADA2 package provides a native implementation of the <a href="http://www.ncbi.nlm.nih.gov/pubmed/17586664">naive Bayesian classifier method</a> for this purpose. The <code>assignTaxonomy</code> function takes as input a set of sequences to ba classified, and a training set of reference sequences with known taxonomy, and outputs taxonomic assignments with at least <code>minBoot</code> bootstrap confidence.</p>
-<p>We maintain <a href="training.html">formatted training fastas for the RDP training set, GreenGenes clustered at 97% identity, and the Silva reference database</a>, and additional trainings fastas suitable for protists and certain specific environments have been contributed. For fungal taxonomy, the General Fasta release files from the <a href="https://unite.ut.ee/repository.php">UNITE ITS database</a> can be used as is. To follow along, download the <code>silva_nr_v128_train_set.fa.gz</code> file, and place it in the directory with the fastq files.</p>
-<pre class="r"><code>taxa &lt;- assignTaxonomy(seqtab.nochim, &quot;~/tax/silva_nr_v128_train_set.fa.gz&quot;, multithread=TRUE)</code></pre>
+<p>It is common at this point, especially in 16S/18S/ITS amplicon sequencing, to assign taxonomy to the sequence variants. The DADA2 package provides a native implementation of the <a href="http://www.ncbi.nlm.nih.gov/pubmed/17586664">naive Bayesian classifier method</a> for this purpose. The <code>assignTaxonomy</code> function takes as input a set of sequences to be classified and a training set of reference sequences with known taxonomy, and outputs taxonomic assignments with at least <code>minBoot</code> bootstrap confidence.</p>
+<p>We maintain <a href="training.html">formatted training fastas for the RDP training set, GreenGenes clustered at 97% identity, and the Silva reference database</a>, and additional trainings fastas suitable for protists and certain specific environments have been contributed. For fungal taxonomy, the General Fasta release files from the <a href="https://unite.ut.ee/repository.php">UNITE ITS database</a> can be used as is. To follow along, download the <code>silva_nr_v132_train_set.fa.gz</code> file, and place it in the directory with the fastq files.</p>
+<pre class="r"><code>taxa &lt;- assignTaxonomy(seqtab.nochim, &quot;~/tax/silva_nr_v132_train_set.fa.gz&quot;, multithread=TRUE)</code></pre>
 <div style="border: 1px solid blue;padding: 5px;background-color: #f0f0ff;margin-top:30px;margin-bottom: 15px;">
-<span style="color:blue"><strong>Extensions:</strong></span> The dada2 package also implements a method to make <a href="assign.html#species-assignment">species level assignments based on <strong>exact matching</strong></a> between ASVs and sequenced reference strains. Recent analysis suggests that <a href="https://academic.oup.com/bioinformatics/advance-article-abstract/doi/10.1093/bioinformatics/bty113/4913809">exact matching (or 100% identitiy) is the only appropriate way to assign species to 16S gene fragments</a>. Currently, <a href="training.html">species-assignment training fastas are available for the Silva and RDP 16S databases</a>. To follow the optional species addition step, download the <code>silva_species_assignment_v128.fa.gz</code> file, and place it in the directory with the fastq files.
-</div>
-<pre class="r"><code>taxa &lt;- addSpecies(taxa, &quot;~/tax/silva_species_assignment_v128.fa.gz&quot;)</code></pre>
-<div style="border: 1px solid blue;padding: 5px;background-color: #f0f0ff;;margin-bottom: 30px;">
-
+<p><span style="color:blue"><strong>Extensions:</strong></span> The dada2 package also implements a method to make <a href="assign.html#species-assignment">species level assignments based on <strong>exact matching</strong></a> between ASVs and sequenced reference strains. Recent analysis suggests that <a href="https://academic.oup.com/bioinformatics/advance-article-abstract/doi/10.1093/bioinformatics/bty113/4913809">exact matching (or 100% identity) is the only appropriate way to assign species to 16S gene fragments</a>. Currently, <a href="training.html">species-assignment training fastas are available for the Silva and RDP 16S databases</a>. To follow the optional species addition step, download the <code>silva_species_assignment_v132.fa.gz</code> file, and place it in the directory with the fastq files.</p>
+<pre class="r"><code>taxa &lt;- addSpecies(taxa, &quot;~/tax/silva_species_assignment_v132.fa.gz&quot;)</code></pre>
 </div>
 <p>Let’s inspect the taxonomic assignments:</p>
 <pre class="r"><code>taxa.print &lt;- taxa # Removing sequence rownames for display only
 rownames(taxa.print) &lt;- NULL
 head(taxa.print)</code></pre>
-<pre><code>##      Kingdom    Phylum          Class         Order          
-## [1,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot;
-## [2,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot;
-## [3,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot;
-## [4,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot;
-## [5,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot;
-## [6,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot;
-##      Family                      Genus         Species       
-## [1,] &quot;Bacteroidales_S24-7_group&quot; NA            NA            
-## [2,] &quot;Bacteroidales_S24-7_group&quot; NA            NA            
-## [3,] &quot;Bacteroidales_S24-7_group&quot; NA            NA            
-## [4,] &quot;Bacteroidales_S24-7_group&quot; NA            NA            
-## [5,] &quot;Bacteroidaceae&quot;            &quot;Bacteroides&quot; &quot;acidifaciens&quot;
-## [6,] &quot;Bacteroidales_S24-7_group&quot; NA            NA</code></pre>
+<pre><code>##      Kingdom    Phylum          Class         Order           Family          
+## [1,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot; &quot;Muribaculaceae&quot;
+## [2,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot; &quot;Muribaculaceae&quot;
+## [3,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot; &quot;Muribaculaceae&quot;
+## [4,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot; &quot;Muribaculaceae&quot;
+## [5,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot; &quot;Bacteroidaceae&quot;
+## [6,] &quot;Bacteria&quot; &quot;Bacteroidetes&quot; &quot;Bacteroidia&quot; &quot;Bacteroidales&quot; &quot;Muribaculaceae&quot;
+##      Genus         Species
+## [1,] NA            NA     
+## [2,] NA            NA     
+## [3,] NA            NA     
+## [4,] NA            NA     
+## [5,] &quot;Bacteroides&quot; NA     
+## [6,] NA            NA</code></pre>
 <p>Unsurprisingly, the Bacteroidetes are well represented among the most abundant taxa in these fecal samples. Few species assignments were made, both because it is often not possible to make unambiguous species assignments from subsegments of the 16S gene, and because there is surprisingly little coverage of the indigenous mouse gut microbiota in reference databases.</p>
 <div style="border: 1px solid red;padding: 5px;background-color: #fff6f6;">
-<strong><span style="color:red">Considerations for your own data:</span></strong> If your reads do not seem to be appropriately assigned, for example lots of your bacterial 16S sequences are being assigned as <code>Eukaryota NA NA NA NA NA</code>, your reads may be in the opposite orientation as the reference database. Tell dada2 to try the reverse-complement orientation with <code>assignTaxonomy(..., tryRC=TRUE)</code> and see if this fixes the assignments.
+<strong><span style="color:red">Considerations for your own data:</span></strong> If your reads do not seem to be appropriately assigned, for example lots of your bacterial 16S sequences are being assigned as <code>Eukaryota NA NA NA NA NA</code>, your reads may be in the opposite orientation as the reference database. Tell dada2 to try the reverse-complement orientation with <code>assignTaxonomy(..., tryRC=TRUE)</code> and see if this fixes the assignments. If using DECIPHER for taxonomy, try <code>IdTaxa (..., strand=&quot;both&quot;)</code>.
+</div>
+<div style="border: 1px solid green;padding: 5px;background-color: #f0fff0;margin-top:30px;margin-bottom: 15px;">
+<p><span style="color:green"><strong>Alternatives:</strong></span> The recently developed <code>IdTaxa</code> taxonomic classification method is also available via <a href="https://bioconductor.org/packages/release/bioc/html/DECIPHER.html">the DECIPHER Bioconductor package</a>. The paper introducing the IDTAXA algorithm <a href="https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0521-5">reports classification performance that is better than the long-time standard set by the naive Bayesian classifier</a>. Here we include a code block that allows you to use <code>IdTaxa</code> as a drop-in replacement for <code>assignTaxonomy</code> (and it’s faster as well!). Trained classifiers are available from <a href="http://DECIPHER.codes/Downloads.html" class="uri">http://DECIPHER.codes/Downloads.html</a>. Download the SILVA SSU r132 (modified) file to follow along.</p>
+<pre class="r"><code>library(DECIPHER); packageVersion(&quot;DECIPHER&quot;)</code></pre>
+<pre><code>## [1] &#39;2.14.0&#39;</code></pre>
+<pre class="r"><code>dna &lt;- DNAStringSet(getSequences(seqtab.nochim)) # Create a DNAStringSet from the ASVs
+load(&quot;~/tax/IDTaxa/SILVA_SSU_r132_March2018.RData&quot;) # CHANGE TO THE PATH OF YOUR TRAINING SET
+ids &lt;- IdTaxa(dna, trainingSet, strand=&quot;top&quot;, processors=NULL, verbose=FALSE) # use all processors
+ranks &lt;- c(&quot;domain&quot;, &quot;phylum&quot;, &quot;class&quot;, &quot;order&quot;, &quot;family&quot;, &quot;genus&quot;, &quot;species&quot;) # ranks of interest
+# Convert the output object of class &quot;Taxa&quot; to a matrix analogous to the output from assignTaxonomy
+taxid &lt;- t(sapply(ids, function(x) {
+        m &lt;- match(ranks, x$rank)
+        taxa &lt;- x$taxon[m]
+        taxa[startsWith(taxa, &quot;unclassified_&quot;)] &lt;- NA
+        taxa
+}))
+colnames(taxid) &lt;- ranks; rownames(taxid) &lt;- getSequences(seqtab.nochim)</code></pre>
+The <code>taxid</code> matrix from <code>IdTaxa</code> is a drop-in replacement for the <code>taxa</code> matrix from <code>assignTaxonomy</code>, simply set <code>taxa &lt;- taxid</code> to carry on using the <code>IdTaxa</code> assignments. Read more about <code>IdTaxa</code> and other useful tools at <a href="http://www2.decipher.codes/">the DECIPHER R package website</a>.
 </div>
 <p> </p>
 </div>
@@ -619,9 +700,11 @@ cat(&quot;Of those,&quot;, sum(match.ref), &quot;were exact matches to the expec
 <p>The <a href="https://joey711.github.io/phyloseq/">phyloseq R package is a powerful framework for further analysis of microbiome data</a>. We now demonstrate how to straightforwardly import the tables produced by the DADA2 pipeline into phyloseq. We’ll also add the small amount of metadata we have – the samples are named by the gender (G), mouse subject number (X) and the day post-weaning (Y) it was sampled (eg. GXDY).</p>
 <p><strong>Import into phyloseq</strong>:</p>
 <pre class="r"><code>library(phyloseq); packageVersion(&quot;phyloseq&quot;)</code></pre>
-<pre><code>## [1] &#39;1.23.1&#39;</code></pre>
+<pre><code>## [1] &#39;1.30.0&#39;</code></pre>
+<pre class="r"><code>library(Biostrings); packageVersion(&quot;Biostrings&quot;)</code></pre>
+<pre><code>## [1] &#39;2.54.0&#39;</code></pre>
 <pre class="r"><code>library(ggplot2); packageVersion(&quot;ggplot2&quot;)</code></pre>
-<pre><code>## [1] &#39;2.2.1&#39;</code></pre>
+<pre><code>## [1] &#39;3.3.0&#39;</code></pre>
 <pre class="r"><code>theme_set(theme_bw())</code></pre>
 <p>We can construct a simple sample <code>data.frame</code> from the information encoded in the filenames. Usually this step would instead involve reading the sample data in from a file.</p>
 <pre class="r"><code>samples.out &lt;- rownames(seqtab.nochim)
@@ -637,12 +720,18 @@ rownames(samdf) &lt;- samples.out</code></pre>
 <pre class="r"><code>ps &lt;- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
                sample_data(samdf), 
                tax_table(taxa))
-ps &lt;- prune_samples(sample_names(ps) != &quot;Mock&quot;, ps) # Remove mock sample
+ps &lt;- prune_samples(sample_names(ps) != &quot;Mock&quot;, ps) # Remove mock sample</code></pre>
+<p>It is more convenient to use short names for our ASVs (e.g. ASV21) rather than the full DNA sequence when working with some of the tables and visualizations from phyloseq, but we want to keep the full DNA sequences for other purposes like merging with other datasets or indexing into reference databases like <a href="http://www.earthmicrobiome.org/">the Earth Microbiome Project</a>. For that reason we’ll store the DNA sequences of our ASVs in the refseq slot of the phyloseq object, and then rename our taxa to a short string. That way, the short new taxa names will appear in tables and plots, and we can still recover the DNA sequences corresponding to each ASV as needed with <code>refseq(ps)</code>.</p>
+<pre class="r"><code>dna &lt;- Biostrings::DNAStringSet(taxa_names(ps))
+names(dna) &lt;- taxa_names(ps)
+ps &lt;- merge_phyloseq(ps, dna)
+taxa_names(ps) &lt;- paste0(&quot;ASV&quot;, seq(ntaxa(ps)))
 ps</code></pre>
 <pre><code>## phyloseq-class experiment-level object
 ## otu_table()   OTU Table:         [ 232 taxa and 19 samples ]
 ## sample_data() Sample Data:       [ 19 samples by 4 sample variables ]
-## tax_table()   Taxonomy Table:    [ 232 taxa by 7 taxonomic ranks ]</code></pre>
+## tax_table()   Taxonomy Table:    [ 232 taxa by 7 taxonomic ranks ]
+## refseq()      DNAStringSet:      [ 232 reference sequences ]</code></pre>
 <p>We are now ready to use phyloseq!</p>
 <p><strong>Visualize alpha-diversity</strong>:</p>
 <pre class="r"><code>plot_richness(ps, x=&quot;Day&quot;, measures=c(&quot;Shannon&quot;, &quot;Simpson&quot;), color=&quot;When&quot;)</code></pre>
@@ -652,32 +741,39 @@ ps</code></pre>
 <pre class="r"><code># Transform data to proportions as appropriate for Bray-Curtis distances
 ps.prop &lt;- transform_sample_counts(ps, function(otu) otu/sum(otu))
 ord.nmds.bray &lt;- ordinate(ps.prop, method=&quot;NMDS&quot;, distance=&quot;bray&quot;)</code></pre>
-<pre><code>## Run 0 stress 0.08072627 
-## Run 1 stress 0.08602584 
-## Run 2 stress 0.08995028 
-## Run 3 stress 0.1232732 
-## Run 4 stress 0.08995024 
-## Run 5 stress 0.1301655 
-## Run 6 stress 0.1232732 
-## Run 7 stress 0.08053145 
+<pre><code>## Run 0 stress 0.08574537 
+## Run 1 stress 0.1264727 
+## Run 2 stress 0.08942897 
+## Run 3 stress 0.1216671 
+## Run 4 stress 0.08002299 
 ## ... New best solution
-## ... Procrustes: rmse 0.009107417  max resid 0.02984653 
-## Run 8 stress 0.1335534 
-## Run 9 stress 0.08602579 
-## Run 10 stress 0.1214509 
-## Run 11 stress 0.08602579 
-## Run 12 stress 0.08602659 
-## Run 13 stress 0.08995064 
-## Run 14 stress 0.08995033 
-## Run 15 stress 0.1214508 
-## Run 16 stress 0.08602592 
-## Run 17 stress 0.08995026 
-## Run 18 stress 0.08053038 
+## ... Procrustes: rmse 0.04283316  max resid 0.1433318 
+## Run 5 stress 0.1233096 
+## Run 6 stress 0.3653255 
+## Run 7 stress 0.1319352 
+## Run 8 stress 0.08002299 
 ## ... New best solution
-## ... Procrustes: rmse 0.0001494827  max resid 0.0003161612 
+## ... Procrustes: rmse 1.709956e-05  max resid 4.666619e-05 
 ## ... Similar to previous best
-## Run 19 stress 0.121451 
-## Run 20 stress 0.08602588 
+## Run 9 stress 0.08002299 
+## ... New best solution
+## ... Procrustes: rmse 3.684983e-06  max resid 7.075999e-06 
+## ... Similar to previous best
+## Run 10 stress 0.08002299 
+## ... Procrustes: rmse 4.418113e-06  max resid 7.719035e-06 
+## ... Similar to previous best
+## Run 11 stress 0.08942878 
+## Run 12 stress 0.08574537 
+## Run 13 stress 0.08942866 
+## Run 14 stress 0.08942935 
+## Run 15 stress 0.08942887 
+## Run 16 stress 0.3744255 
+## Run 17 stress 0.08002299 
+## ... Procrustes: rmse 9.790044e-07  max resid 1.953481e-06 
+## ... Similar to previous best
+## Run 18 stress 0.1233096 
+## Run 19 stress 0.08574537 
+## Run 20 stress 0.08942877 
 ## *** Solution reached</code></pre>
 <pre class="r"><code>plot_ordination(ps.prop, ord.nmds.bray, color=&quot;When&quot;, title=&quot;Bray NMDS&quot;)</code></pre>
 <p><img src="tutorial_files/figure-html/ordinate-1.png" width="672" /></p>
@@ -695,6 +791,7 @@ plot_bar(ps.top20, x=&quot;Day&quot;, fill=&quot;Family&quot;) + facet_wrap(~Whe
 <div class="container" style="width: 100%;color:grey;text-align:right">
   <hr>
   Maintained by Benjamin Callahan (benjamin DOT j DOT callahan AT gmail DOT com)
+  <br> Documentation License: <a href="https://creativecommons.org/licenses/by/4.0">CC-BY 4.0</a>
 </div>
 
 
@@ -713,6 +810,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

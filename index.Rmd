@@ -1,26 +1,26 @@
+---
+title: "DADA2: Fast and accurate sample inference from amplicon data with single-nucleotide resolution"
+---
+
 &nbsp;
 <center>
-![The DADA2 R package](images/DADA2_Logo_Text_1_8_640.png)
+![](images/DADA2_Logo_Text_noVer_640px.png)
 </center>
 
 --------------------------
 
-## Fast and accurate sample inference from amplicon data with single-nucleotide resolution
+**<span style="color:red">The DADA2 1.26 release is live, with native support for ARM architectures such as the Apple M1/M2 chips! [Release notes](ReleaseNotes_1_26.html).</span>**
 
 --------------------------
 
-####**<span style="color:red">Version 1.8 of the dada2 R package has been released. See the [release notes.](ReleaseNotes_1_8.html)</span>**
-
-&nbsp;
-
 ## Installation
 
-Binaries for the current release version of DADA2 (1.8) are available from Bioconductor. Note that you must have R 3.5.0 or newer, and [Biocondcutor version 3.7](https://www.bioconductor.org/install/), to install the current release from Bioconductor.
+Binaries for the current release version of DADA2 (1.26) are available from Bioconductor. Note that you must have R 4.2.0 or newer, and [Bioconductor version 3.16](https://www.bioconductor.org/install/), to install the most current release from Bioconductor.
 
 ```S
-## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("dada2")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("dada2", version = "3.16")
 ```
 
 If you wish to install the latest and greatest development version, or to install to earlier versions of R, see our [from-source installation instructions](dada-installation.html).
@@ -33,6 +33,8 @@ If you wish to install the latest and greatest development version, or to instal
 
 The [DADA2 Workflow on Big Data](bigdata.html) goes through workflow optimized to run on large datasets (10s of millions to billions of reads).
 
+An [ITS-specific version of the DADA2 workflow](ITS_workflow.html) identifies and verifiably removes primers on both ends of each ITS read, a key step due to the variable length of the ITS region.
+
 Short demonstrations of [assigning taxonomy](assign.html) and [assigning species](assign.html) to sequences.
 
 &nbsp;
@@ -42,6 +44,8 @@ Short demonstrations of [assigning taxonomy](assign.html) and [assigning species
 Our [manuscript introducing DADA2](http://dx.doi.org/10.1038/nmeth.3869) ([OA link](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4927377/)) compares the accuracy of DADA2 and other methods on several mock community datasets. 
 
 We describe [the broad advantages of exact sequence variants over OTUs in our recent open-access ISMEJ paper](http://dx.doi.org/10.1038/ismej.2017.119).
+
+We evaluate [the high accuracy and resolution that is achievable by sequencing the full-length 16S rRNA gene with PacBio and DADA2](https://www.biorxiv.org/content/early/2018/08/15/392332).
 
 Further [benchmarking of DADA2 against the methods evaluated in a recent QIIME1 benchmarking paper](SotA.html) is available.
 

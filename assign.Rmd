@@ -69,7 +69,7 @@ genus.species <- assignSpecies(seqs, "Training/rdp_species_assignment_16.fa.gz")
 unname(genus.species)
 ```
 
-By default the `assignSpecies` method only returns species assignments if there is no ambiguity, i.e. all exact matches were to the same species. However, given that we are generally working with fragments of the 16S gene, it is common that exact matches are made to multiple sequences that are identical over the sequenced region. This is often still useful information, so to have all sequence hits returned the `returnMultiple=TRUE` argument can be passed to the `assignSpecies` function:
+By default the `assignSpecies` method only returns species assignments if there is no ambiguity, i.e. all exact matches were to the same species. However, given that we are generally working with fragments of the 16S gene, it is common that exact matches are made to multiple sequences that are identical over the sequenced region. This is often still useful information, so to have all sequence hits returned the `allowMultiple=TRUE` argument can be passed to the `assignSpecies` function:
 
 ```{r assign-species-multi}
 unname(assignSpecies(seqs, "Training/rdp_species_assignment_16.fa.gz", allowMultiple=TRUE))
@@ -86,8 +86,8 @@ Several of these sequences exactly match multiple species. Setting `allowMultipl
 In many cases it is desirable to link the species annotation in with the broader taxonomic annotation afforded by `assignTaxonomy`. The convenience function `addSpecies` serves this purpose, as it takes as input a taxonomy table, and outputs a table with an added species column. Only those genus-species binomials which are consistent with the genus assigned in the provided taxonomy table are retained in the output. *Note that we have switched to the silva training fastas here for demonstration purposes.*
 
 ```{r add-species}
-tt <- assignTaxonomy(seqs, "Training/silva_nr_v128_train_set.fa.gz")
-tt.plus <- addSpecies(tt, "Training/silva_species_assignment_v128.fa.gz", verbose=TRUE)
+tt <- assignTaxonomy(seqs, "Training/silva_nr_v132_train_set.fa.gz")
+tt.plus <- addSpecies(tt, "Training/silva_species_assignment_v132.fa.gz", verbose=TRUE)
 unname(tt.plus)
 ```
 
